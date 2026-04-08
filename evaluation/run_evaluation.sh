@@ -8,10 +8,10 @@ set -e
 # --- 1. Config (edit for your environment) ---
 
 export IIEBENCH_DATA_DIR="${IIEBENCH_DATA_DIR:-./data}"
-# Multi-turn GT JSON: final_multi_dataset_cleaned.json (short) or long_multi_compiled_modifications_with_masks.json (long)
-INPUT_MULTI_JSON_PATH="${IIEBENCH_DATA_DIR}/final_multi_dataset_cleaned.json"
+# Multi-turn GT JSON (HF dataset: multi_turn/multi_turn.json)
+INPUT_MULTI_JSON_PATH="${IIEBENCH_DATA_DIR}/multi_turn/multi_turn.json"
 
-# Model output dirs (names ending with _multi; evaluate.py picks generated_images_multi_50 or generated_images_multi_long)
+# Model output dirs (names ending with _multi; evaluate.py looks under generated_images_multi_50)
 MODEL_MULTI_PATHS=(
     "${IIEBENCH_DATA_DIR}/model_outputs/hive_multi"
     # Add more paths here...

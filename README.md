@@ -1,6 +1,8 @@
-# IIE-Bench
+# Omni IIE Bench
 
-Benchmark and toolkit for **Instruction-based Image Editing (IIE)**. This repo provides evaluation code and dataset construction pipelines for single-turn, short multi-turn, and long multi-turn settings.
+**Hugging Face dataset:** [YamJoy/OmniIIEBench](https://huggingface.co/datasets/YamJoy/OmniIIEBench)
+
+Benchmark and toolkit for **Instruction-based Image Editing (IIE)**. This repo provides evaluation code and dataset construction pipelines for single-turn and multi-turn settings.
 
 ---
 
@@ -31,15 +33,14 @@ iie_bench/
 
 ## Data
 
-The benchmark uses three JSON datasets (not shipped in this repo; distribute separately or via Hugging Face):
+The benchmark uses two JSON datasets (not shipped in this repo; available on [Hugging Face](https://huggingface.co/datasets/YamJoy/OmniIIEBench)):
 
-| Setting            | File                                              | Description                    |
-|--------------------|---------------------------------------------------|--------------------------------|
-| Single-turn        | `final_dataset.json`                              | 1725 samples, high/low level  |
-| Multi-turn (short) | `final_multi_dataset_cleaned.json`                | 1131 round-level records      |
-| Multi-turn (long)   | `long_multi_compiled_modifications_with_masks.json` | 1226 round-level records    |
+| Setting     | File                              | Description               |
+|-------------|-----------------------------------|---------------------------|
+| Single-turn | `single_turn.json`                | 1723 samples, high/low   |
+| Multi-turn  | `multi_turn.json`                 | 1131 round-level records |
 
-Put these JSON files and the corresponding images/masks in a directory and set `IIEBENCH_DATA_DIR` to that path.
+Download from [Hugging Face](https://huggingface.co/datasets/YamJoy/OmniIIEBench) and set `IIEBENCH_DATA_DIR` to the downloaded directory.
 
 ---
 
@@ -56,15 +57,15 @@ Put these JSON files and the corresponding images/masks in a directory and set `
 
 ### Single-turn
 
-1. Place `final_dataset.json` in `$IIEBENCH_DATA_DIR`.
+1. Set `IIEBENCH_DATA_DIR` to the downloaded dataset root (contains `single_turn/`, `multi_turn/`).
 2. Organize model outputs so that for each `sample_id` and level (e.g. `_high`, `_low`) the evaluator can find the generated image under your model root (see `evaluate.py` for path logic).
 3. Run:
 
 ```bash
 cd evaluation
-export IIEBENCH_DATA_DIR=/path/to/your/data
+export IIEBENCH_DATA_DIR=/path/to/downloaded/OmniIIEBench
 python evaluate.py \
-  --input_json "$IIEBENCH_DATA_DIR/final_dataset.json" \
+  --input_json "$IIEBENCH_DATA_DIR/single_turn/single_turn.json" \
   --gen_dir /path/to/model/outputs \
   --model_name MyModel \
   --output_csv "$IIEBENCH_RESULTS_DIR/MyModel_scores.csv"
@@ -72,8 +73,8 @@ python evaluate.py \
 
 ### Multi-turn
 
-1. Place `final_multi_dataset_cleaned.json` (or the long JSON) in `$IIEBENCH_DATA_DIR`.
-2. Model output directory names should end with `_multi`; the script looks under `generated_images_multi_50` or `generated_images_multi_long` as in the JSON paths.
+1. Use `$IIEBENCH_DATA_DIR/multi_turn/multi_turn.json`.
+2. Model output directory names should end with `_multi`; the script looks under `generated_images_multi_50` as in the JSON paths.
 3. Edit `evaluation/run_evaluation.sh`: set `MODEL_MULTI_PATHS` and `MODEL_MULTI_NAMES`, then:
 
 ```bash
@@ -122,11 +123,16 @@ python dataset_construction/LLM_modification.py
 
 ## Citation
 
-If you use IIE-Bench in your work, please cite:
+If you use Omni IIE Bench in your work, please cite:
 
 ```bibtex
-
+@misc{yang2026omniiiebenchbenchmarking,
+      title={Omni IIE Bench: Benchmarking the Practical Capabilities of Image Editing Models}, 
+      author={Yujia Yang and Yuanxiang Wang and Zhenyu Guan and Tiankun Yang and Chenxi Bao and Haopeng Jin and Jinwen Luo and Xinyu Zuo and Lisheng Duan and Haijin Liang and Jin Ma and Xinming Wang and Ruiwen Tao and Hongzhu Yi},
+      year={2026},
+      eprint={2603.16944},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2603.16944}, 
 }
 ```
-
-(Replace with your paper details.)

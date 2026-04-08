@@ -41,11 +41,21 @@ def _resize_mask(mask: Image.Image) -> Image.Image:
 # ===================================================================
 # Load samples from JSON and match generated images
 # ===================================================================
+def _resolve_data_path(path: str, data_dir: str) -> str:
+    """If path is relative, prepend data_dir. Otherwise return as-is."""
+    if not path or not isinstance(path, str):
+        return path
+    if os.path.isabs(path):
+        return path
+    return os.path.normpath(os.path.join(data_dir, path))
+
+
 def load_samples_from_json(args, skipped_json_path):
     """
     Load sample list from JSON and match generated images.
     If --gen_dir basename ends with '_multi', choose subdir
     generated_images_multi_50 or generated_images_multi_long from temp_path.
+    Relative paths in JSON are resolved against data_dir (--data_dir or dir of input_json).
     """
     matched = []
     skipped_samples = [] 
@@ -59,6 +69,18 @@ def load_samples_from_json(args, skipped_json_path):
     except Exception as e:
         print(f"Error loading {args.input_json}: {e}")
         return []
+
+    # Resolve data_dir for relative paths (IIEBENCH_DATA_DIR or directory containing input JSON)
+    data_dir = getattr(args, 'data_dir', None) or os.environ.get('IIEBENCH_DATA_DIR', '')
+    if not data_dir:
+        data_dir = os.path.dirname(os.path.abspath(args.input_json))
+    data_dir = os.path.abspath(data_dir)
+
+    path_keys = ['modified_image_path', 'original_image_path', 'source_mask_path', 'target_mask_path']
+    for item in json_data:
+        for key in path_keys:
+            if key in item and item[key]:
+                item[key] = _resolve_data_path(item[key], data_dir)
 
     print(f"Loaded {len(json_data)} samples from JSON. Matching against --gen_dir...")
 
@@ -356,6 +378,8 @@ if __name__ == "__main__":
                         help="Path to JSON with GT sample info.")
     parser.add_argument("--gen_dir", type=str, required=True,
                         help="Root directory of generated images.")
+    parser.add_argument("--data_dir", type=str, default=None,
+                        help="Base dir for relative paths in JSON (default: dir of input_json or IIEBENCH_DATA_DIR).")
     parser.add_argument("--model_name", type=str, required=True)
     parser.add_argument("--output_csv", type=str, required=True)
     
