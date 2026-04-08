@@ -1,0 +1,18 @@
+# Omni IIE Bench - Evaluation & Dataset Construction
+# Python >= 3.8 recommended
+# 根据代码 import 整理，版本号未严格锁定，可按环境自行调整
+
+# Core
+torch
+numpy
+Pillow
+pandas
+tqdm
+requests
+
+# Evaluation metrics
+lpips
+scikit-image
+
+# Vision models (CLIP, SAM, GroundingDINO)
+transformers
