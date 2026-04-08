@@ -1,5 +1,7 @@
 # Omni IIE Bench
 
+[CVPR 2026] Omni IIE Bench: Benchmarking the Practical Capabilities of Image Editing Models
+
 **Hugging Face dataset:** [YamJoy/OmniIIEBench](https://huggingface.co/datasets/YamJoy/OmniIIEBench)
 
 Benchmark and toolkit for **Instruction-based Image Editing (IIE)**. This repo provides evaluation code and dataset construction pipelines for single-turn and multi-turn settings.
