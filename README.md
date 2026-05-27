@@ -4,7 +4,7 @@
 
 ### Benchmarking the Practical Capabilities of Instruction-based Image Editing Models
 
-[[arXiv](https://arxiv.org/abs/2603.16944)] [[HuggingFace Dataset](https://huggingface.co/datasets)] [[Project Page](https://github.com/Young-2000/OmniIIEBench)]
+[[arXiv](https://arxiv.org/abs/2603.16944)] [[HuggingFace Dataset](https://huggingface.co/datasets/YamJoy/OmniIIEBench)] [[Project Page](https://github.com/Young-2000/OmniIIEBench)]
 
 </div>
 
