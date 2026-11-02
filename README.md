@@ -226,8 +226,11 @@ python evaluate.py \
   --input_json "$IIEBENCH_DATA_DIR/final_dataset.json" \
   --gen_dir /path/to/model/outputs \
   --model_name MyModel \
-  --output_csv "$IIEBENCH_RESULTS_DIR/MyModel_scores.csv"
+  --output_csv "${IIEBENCH_RESULTS_DIR:-./results}/MyModel_scores.csv"
 ```
+
+The example uses `./results` when `IIEBENCH_RESULTS_DIR` is unset or empty.
+Set `IIEBENCH_RESULTS_DIR` to choose another output directory.
 
 ### Multi-Turn Evaluation
 
